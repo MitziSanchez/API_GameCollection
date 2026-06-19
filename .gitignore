@@ -1,0 +1,17 @@
+# Ignorar configuración local
+API_GameCollection/API_GameCollection/appsettings.Development.json
+
+# Archivos de usuario de Visual Studio
+API_GameCollection/API_GameCollection/.vs/
+API_GameCollection/API_GameCollection/*.user
+API_GameCollection/API_GameCollection/*.suo
+
+# Carpetas de compilación
+API_GameCollection/API_GameCollection/bin/
+API_GameCollection/API_GameCollection/obj/
+
+# Archivos de publicación
+API_GameCollection/API_GameCollection/*.publish.xml
+
+# Archivos temporales
+*.log
