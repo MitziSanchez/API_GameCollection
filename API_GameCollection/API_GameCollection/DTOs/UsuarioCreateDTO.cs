@@ -13,8 +13,8 @@ namespace API_GameCollection.DTOs
 
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$", 
-            ErrorMessage = "La contraseña debe incluir mayúscula, minúscula, número y caracter especial.")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$", 
+            ErrorMessage = "La contraseña debe incluir al menos una mayúscula, un número y un caracter especial.")]
         public string Contrasena { get; set; }
     }
 }

@@ -1,8 +1,9 @@
 
 using API_GameCollection.Models;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 using API_GameCollection.Profiles;
+using API_GameCollection.Services;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,9 @@ builder.Services.AddSwaggerGen();
 
 // Incorporar autoMapper, toma todos los profiles de la aplicación y los registra en el contenedor de servicios
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
+
+// Registrar clase de contraseñas como servicio para inyección de dependencias, scoped: una instancia para cada request
+builder.Services.AddScoped<PasswordService>();
 
 var app = builder.Build();
 

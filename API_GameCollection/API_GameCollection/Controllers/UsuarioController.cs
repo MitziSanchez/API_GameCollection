@@ -14,7 +14,7 @@ namespace API_GameCollection.Controllers
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
-        private readonly PasswordService _Password = new PasswordService();
+        private readonly PasswordService _Password;
 
         public UsuarioController(GameCollectionContext context, IMapper mapper, PasswordService password)
         {
@@ -51,7 +51,8 @@ namespace API_GameCollection.Controllers
                 if (_context.Usuarios.Any(u => u.Nombre == nuevoUsuario.Nombre))
                 {
                     // Http 409, el recurso no puede crearse por que ya existe
-                    return Conflict(new {
+                    return Conflict(new 
+                    {
                         message = "El nombre de usuario ya está registrado."
                     });
                 }
