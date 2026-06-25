@@ -13,6 +13,10 @@ namespace API_GameCollection.Profiles
 
             // Mapeo para usuario existente
             CreateMap<Usuario, UsuarioDTO>();
+
+            // Mapeo para sesion de usuario (Token vacío)
+            CreateMap<Usuario, UsuarioSesionDTO>()
+                .ForMember(us => us.Token, opt => opt.Ignore());
         }
     }
 }
