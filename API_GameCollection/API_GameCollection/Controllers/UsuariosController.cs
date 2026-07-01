@@ -11,13 +11,13 @@ namespace API_GameCollection.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class UsuariosController : ControllerBase
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
         private readonly PasswordService _Password;
 
-        public UsuarioController(GameCollectionContext context, IMapper mapper, PasswordService password)
+        public UsuariosController(GameCollectionContext context, IMapper mapper, PasswordService password)
         {
             _context = context;
             _mapper = mapper;

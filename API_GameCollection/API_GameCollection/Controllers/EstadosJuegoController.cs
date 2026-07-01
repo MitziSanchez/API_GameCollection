@@ -8,12 +8,12 @@ namespace API_GameCollection.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class EstadoJuegoController : ControllerBase
+    public class EstadosJuegoController : ControllerBase
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
 
-        public EstadoJuegoController(GameCollectionContext context, IMapper mapper)
+        public EstadosJuegoController(GameCollectionContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -21,7 +21,7 @@ namespace API_GameCollection.Controllers
 
         #region GET
 
-        // GET: /EstadoJuego
+        // GET: /EstadosJuego
         [HttpGet]
         public IActionResult GetAll()
         {

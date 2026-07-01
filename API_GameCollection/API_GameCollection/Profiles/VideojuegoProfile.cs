@@ -10,8 +10,8 @@ namespace API_GameCollection.Profiles
         {
             // Mapeo Videojuegos existentes
             CreateMap<Videojuego, VideojuegoDTO>()
-                .ForMember(dest => dest.GeneroNombre, opt => opt.MapFrom(src => src.Genero.Nombre))
-                .ForMember(dest => dest.PlataformaNombre, opt => opt.MapFrom(src => src.Plataforma.Nombre));
+                .ForMember(dest => dest.Genero, opt => opt.MapFrom(src => src.Genero))
+                .ForMember(dest => dest.Plataforma, opt => opt.MapFrom(src => src.Plataforma));
 
             // Mapeo create videojuego
             CreateMap<VideojuegoCreateDTO, Videojuego>();

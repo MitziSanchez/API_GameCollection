@@ -8,12 +8,12 @@ namespace API_GameCollection.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class PlataformaController : ControllerBase
+    public class PlataformasController : ControllerBase
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
 
-        public PlataformaController(GameCollectionContext context, IMapper mapper)
+        public PlataformasController(GameCollectionContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -21,7 +21,7 @@ namespace API_GameCollection.Controllers
 
         #region GET
 
-        // GET: /Plataforma
+        // GET: /Plataformas
         [HttpGet]
         public IActionResult GetAll()
         {

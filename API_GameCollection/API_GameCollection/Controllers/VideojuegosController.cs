@@ -8,13 +8,13 @@ using System.Reflection.PortableExecutable;
 namespace API_GameCollection.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class VideojuegoController : ControllerBase
+    [Route("[Controller]")]
+    public class VideojuegosController : ControllerBase
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
 
-        public VideojuegoController(GameCollectionContext context, IMapper mapper)
+        public VideojuegosController(GameCollectionContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -22,7 +22,7 @@ namespace API_GameCollection.Controllers
 
         #region GET
 
-        // GET: /Videojuego
+        // GET: /Videojuegos
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -35,7 +35,7 @@ namespace API_GameCollection.Controllers
             return Ok(listaDTO);
         }
 
-        // GET: /Videojuego/{id}
+        // GET: /Videojuegos/id
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -61,7 +61,7 @@ namespace API_GameCollection.Controllers
 
         #region POST
 
-        // POST: /Videojuego/
+        // POST: /Videojuegos/
         [HttpPost]
         public IActionResult Create([FromBody] VideojuegoCreateDTO nuevoVideojuego)
         {
@@ -93,7 +93,7 @@ namespace API_GameCollection.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { 
-                    message = "Error interno al crear el videojuego", 
+                    message = "Error interno al crear el videojuego.", 
                     detail = ex.Message 
                 });
             }

@@ -8,12 +8,12 @@ namespace API_GameCollection.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GeneroController : ControllerBase
+    public class GenerosController : ControllerBase
     {
         private readonly GameCollectionContext _context;
         private readonly IMapper _mapper;
 
-        public GeneroController(GameCollectionContext context, IMapper mapper)
+        public GenerosController(GameCollectionContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -21,7 +21,7 @@ namespace API_GameCollection.Controllers
 
         #region GET
 
-        // GET: /Genero
+        // GET: /Generos
         [HttpGet]
         public IActionResult GetAll()
         {
