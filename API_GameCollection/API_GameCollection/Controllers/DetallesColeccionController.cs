@@ -36,7 +36,7 @@ namespace API_GameCollection.Controllers
 
                 // Verifica que exista la colección
                 var coleccion = _context.Coleccions.Find(id);
-                if(coleccion == null)
+                if (coleccion == null)
                 {
                     return Conflict(new
                     {
@@ -49,7 +49,7 @@ namespace API_GameCollection.Controllers
                     .Where(j => j.ColeccionId == id && j.VideojuegoId == nuevo_dc.VideojuegoId)
                     .FirstOrDefault();
 
-                if(juegoExistente != null)
+                if (juegoExistente != null)
                 {
                     return Conflict(new
                     {
@@ -59,7 +59,7 @@ namespace API_GameCollection.Controllers
 
                 // Crear detalle en la colección, Estado por defecto Adquirido 1
                 var insertarDetalle = _mapper.Map<DetalleColeccion>(nuevo_dc);
-                insertarDetalle.EstadoJuegoId = 1; 
+                insertarDetalle.EstadoJuegoId = 1;
 
                 _context.DetalleColeccions.Add(insertarDetalle);
                 _context.SaveChanges();
@@ -104,7 +104,7 @@ namespace API_GameCollection.Controllers
                 .Where(d => d.DetalleColeccionId == id)
                 .Include(d => d.Videojuego)
                     .ThenInclude(v => v.Genero)
-                .Include(d => d.Videojuego).    
+                .Include(d => d.Videojuego).
                     ThenInclude(v => v.Plataforma)
                 .Include(d => d.EstadoJuego)
                 .FirstOrDefault();
@@ -128,10 +128,125 @@ namespace API_GameCollection.Controllers
         #region PUT
 
         // PUT: Colecciones/Detalles/id
+        [HttpPut("Detalles/{id}")]
+        public IActionResult Update(int id, [FromBody] DetalleColeccionUpdateDTO upd)
+        {
+            try
+            {
+
+                // Verificar modelo 
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Verificar que exista el detalle de colección
+                var detColeccion = _context.DetalleColeccions.FirstOrDefault(c => c.DetalleColeccionId == id);
+
+                if (detColeccion == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "El detalle de colección no existe."
+                    });
+                }
+
+                // Modificar registro de detalle de colección                
+                if (upd.Calificacion != null)
+                {
+                    // Verifica que calificacion sea de 0 a 10, decimal
+                    if (upd.Calificacion >= 0 && upd.Calificacion <= 10)
+                    {
+                        // Verifica que existan cambios en la calificación
+                        if (upd.Calificacion != detColeccion.Calificacion)
+                        {
+                            detColeccion.Calificacion = upd.Calificacion;
+                            detColeccion.FechaCalificacion = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new
+                        {
+                            message = "La calificación debe tener valores entre 0 y 10."
+                        });
+                    }                    
+                }
+
+                detColeccion.EstadoJuegoId = upd.EstadoJuegoId;
+                
+                _context.SaveChanges();
+
+                // Recuperar detalle de colección actualizado
+                var detalleActualizado = _context.DetalleColeccions
+                    .Include(d => d.Videojuego)
+                        .ThenInclude(v => v.Genero)
+                    .Include(d => d.Videojuego)
+                        .ThenInclude(v => v.Plataforma)
+                    .Include(d => d.EstadoJuego)
+                    .FirstOrDefault(d => d.DetalleColeccionId == id);
+
+                // Mapear a dto
+                var mostrarDetalle = _mapper.Map<DetalleColeccionDTO>(detalleActualizado);
+
+                return Ok(mostrarDetalle);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Error interno al modificar el detalle de colección.",
+                    detail = ex.Message
+                });
+            }
+
+        }
 
         #endregion
 
         #region DELETE
+
+        // DELETE: Colecciones/Detalles/id
+        [HttpDelete("Detalles/{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {                
+
+                // Verificar que exista el detalle de colección
+                var detColeccion = _context.DetalleColeccions.FirstOrDefault(c => c.DetalleColeccionId == id);
+
+                if (detColeccion == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "El detalle de colección no existe."
+                    });
+                }
+
+                // Eliminar
+                _context.DetalleColeccions.Remove(detColeccion);
+                _context.SaveChanges();
+
+                //return Ok(new
+                //{
+                //    message = "Detalle de colección eliminado correctamente."
+                //});
+
+                // Devuelve 204 No Content al eliminar correctamente
+                return NoContent(); 
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Error interno al eliminar el detalle de colección.",
+                    detail = ex.Message
+                });
+            }
+        }
 
         #endregion 
     }

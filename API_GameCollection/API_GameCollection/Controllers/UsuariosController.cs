@@ -36,7 +36,7 @@ namespace API_GameCollection.Controllers
             {
                 return NotFound(new
                 {
-                    message = $"No se encontro el usuario id {id}"
+                    message = $"No se encontro el usuario id {id}."
                 });
             }
 
@@ -102,7 +102,7 @@ namespace API_GameCollection.Controllers
             {
                 return StatusCode(500, new
                 {
-                    message = "Error interno al crear el usuario",
+                    message = "Error interno al crear el usuario.",
                     detail = ex.Message
                 });
             }

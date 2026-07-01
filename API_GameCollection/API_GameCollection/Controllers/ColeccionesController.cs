@@ -28,41 +28,54 @@ namespace API_GameCollection.Controllers
         [HttpPost("{id}/Colecciones")]
         public IActionResult Create(int id)
         {
-            // Verificar si usuario existe
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
 
-            if (usuario == null)
+            try
             {
-                return NotFound(new
+
+                // Verificar si usuario existe
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+
+                if (usuario == null)
                 {
-                    message = "El usuario no fue encontrado."
+                    return NotFound(new
+                    {
+                        message = "El usuario no fue encontrado."
+                    });
+                }
+
+                // Verifica si el usuario tiene creada una coleccion
+                // Por modelo el usuario puede tener una unica colección
+                bool existe = _context.Coleccions.Any(c => c.UsuarioId == id);
+                if (existe)
+                {
+                    return Conflict(new
+                    {
+                        message = "El usuario ya posee una colección."
+                    });
+                }
+
+                // Crear coleccion
+                var coleccion = new Coleccion();
+                coleccion.UsuarioId = id;
+
+                _context.Coleccions.Add(coleccion);
+                _context.SaveChanges();
+
+                // Recuperar colección
+                var recuperarColeccion = _context.Coleccions.FirstOrDefault(c => c.ColeccionId == coleccion.ColeccionId);
+                var mostrarColeccion = _mapper.Map<ColeccionDTO>(recuperarColeccion);
+
+                return CreatedAtAction(nameof(Get), new { id = coleccion.ColeccionId }, mostrarColeccion);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Error interno al crear la colección.",
+                    detail = ex.Message
                 });
             }
-
-            // Verifica si el usuario tiene creada una coleccion
-            // Por modelo el usuario puede tener una unica colección
-            bool existe = _context.Coleccions.Any(c => c.UsuarioId == id);
-            if (existe)
-            {
-                return Conflict(new
-                {
-                    message = "El usuario ya posee una colección."
-                });
-            }
-
-            // Crear coleccion
-            var coleccion = new Coleccion();
-            coleccion.UsuarioId = id;
-
-            _context.Coleccions.Add(coleccion);
-            _context.SaveChanges();
-
-            // Recuperar colección
-            var recuperarColeccion = _context.Coleccions.FirstOrDefault(c => c.ColeccionId == coleccion.ColeccionId);
-            var mostrarColeccion = _mapper.Map<ColeccionDTO>(recuperarColeccion);
-
-            return CreatedAtAction(nameof(Get), new { id = coleccion.ColeccionId }, mostrarColeccion);
-
         }
 
 
